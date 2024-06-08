@@ -1,18 +1,22 @@
-const express=require("express");
-const app=express();
-const cors=require("cors");
-const PORT=3000;
-app.use(cors());
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const {getUsers,getUserByID,addUser, updateUser,deleteUser} = require("./queries");
 require("dotenv").config();
-app.get("/",(req,res)=>{
-    res.json({
-        info:"it worked!"
-    })
-})
-app.get("/users",db.getUSers);
-app.get("/user",db.getUserById);
-app.post("/create-user",db.addUser);
-app.delete("/delete-user",db.deleteUser);
-app.listen(PORT ,()=>{
-    console.log("server listening on port 3000");
-})
+
+// Middleware 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cors());
+
+// Routes
+app.get("/users", getUsers);
+app.post("/user", getUserByID);
+app.post("/add",addUser);
+app.patch("/updateUser",updateUser)
+app.delete("/remove",deleteUser);
+// Start the server
+app.listen(3000, () => {
+    console.log("Server listening on port 3000");
+});
